@@ -86,32 +86,39 @@ int ListGet(SeqList L, int i, DataType *x)
 // 合并两个有序表为一个有序表
 void Listreunion(SeqList a, SeqList b)
 {
-	int m = a.size, n = b.size, i, j, k, t;
 	SeqList allList;
 	ListInitiate(&allList);
-	for (i = 0; i < m; i++)
+
+	int i, j, k = 0;
+	while (i < a.size && j < b.size)
 	{
-		ListInsert(&allList, k++, a.list[i]);
-	}
-	for (i = 0; i < n; i++)
-	{
-		ListInsert(&allList, k++, b.list[i]);
-	}
-	for (i = 0; i < m + n - 1; i++)
-	{
-		for (j = 0; j < m + n - 1 - i; j++)
+		int min;
+		if (a.list[i] < b.list[j])
 		{
-			if (allList.list[j] > allList.list[j + 1])
-			{
-				t = allList.list[j];
-				allList.list[j] = allList.list[j + 1];
-				allList.list[j + 1] = t;
-			}
+			min = a.list[i];
+			i++;
 		}
+		else
+		{
+			min = b.list[j];
+			j++;
+		}
+		ListInsert(&allList, k, min);
+		k++;
 	}
-	for (i = 0; i < m + n; i++)
+
+	while (i < a.size)
 	{
-		printf("%d", allList.list[i]);
+		ListInsert(&allList, k, a.list[i]);
+		k++;
+		i++;
+	}
+
+	while (j < b.size)
+	{
+		ListInsert(&allList, k, b.list[j]);
+		k++;
+		j++;
 	}
 }
 
